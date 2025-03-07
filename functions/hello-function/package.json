@@ -26,7 +26,7 @@
     "@skedulo/sdk-utilities": "0.2.36",
     "@skedulo/function-utilities": "0.0.4",
     "@types/lodash": "4.14.197",
-    "axios": "1.7.7",
+    "axios": "1.8.2",
     "lodash": "4.17.21",
     "path-to-regexp": "3.2.0"
   }

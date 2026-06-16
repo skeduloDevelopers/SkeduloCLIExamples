@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "type": "UrlOverride"
+  },
+  "name": "work-list",
+  "from": "/work/list",
+  "to": "/platform/page/jobs-view"
+}

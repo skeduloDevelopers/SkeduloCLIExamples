@@ -1,0 +1,7 @@
+{
+  "metadata": {
+    "type": "UrlOverride"
+  },
+  "from": ":landingPage",
+  "to": "/platform/page/team-schedule"
+}

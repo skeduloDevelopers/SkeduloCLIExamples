@@ -45,7 +45,8 @@ The following artifact types are currently available in this repository (with li
 * [Triggered Actions (triggered-action)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/triggered-action/)
 * [Web Extensions (web-extension)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/web-extension/)
 * [Webhooks (webhook)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/webhook/)
-* [User Roles (user-role)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/user-role/)  
+* [User Roles (user-role)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/user-role/)
+* [URL Overrides (url-override)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/url-override/)  
 
 As more artifacts become available, examples will be added to this repository
 

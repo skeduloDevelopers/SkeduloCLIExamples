@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "type": "Automation"
+  },
+  "name": "customer-cancellation-refill",
+  "description": "Raise a Tempo task when a customer cancels a job, then start Tempo on it so the freed slot is offered to pending work.",
+  "status": "active",
+  "trigger": {
+    "type": "recordModified",
+    "description": "A job's status changes to Cancelled",
+    "config": {
+      "objectType": "Jobs",
+      "operations": [
+        "Update"
+      ],
+      "filter": "current.JobStatus == 'Cancelled' AND previous.JobStatus != 'Cancelled'"
+    }
+  },
+  "workflow": {
+    "description": "Create a Tempo task with the cancelled job attached, then run it.",
+    "definition": {
+      "StartAt": "CreateTempoTask",
+      "States": {
+        "CreateTempoTask": {
+          "Type": "Task",
+          "Resource": "action:create-tempo-task",
+          "Arguments": {
+            "title": "{% 'Job cancelled: refill the slot for ' & $trigger.current.Name %}",
+            "description": "{% 'Job ' & $trigger.current.Name & ' scheduled from ' & $trigger.current.Start & ' to ' & $trigger.current.End & ' has been cancelled by the customer. Find pending or unscheduled work in the same region that fits the freed slot and the resources who were allocated, and propose moving it in.' %}",
+            "priority": "medium",
+            "contextRecords": [
+              {
+                "objectType": "Jobs",
+                "id": "{% $trigger.current.UID %}",
+                "relationship": "subject"
+              }
+            ]
+          },
+          "Assign": {
+            "createTempoTask": "{% $states.result %}"
+          },
+          "Next": "RunTempoTask"
+        },
+        "RunTempoTask": {
+          "Type": "Task",
+          "Resource": "action:run-tempo-task",
+          "Arguments": {
+            "taskId": "{% $createTempoTask.result.data.taskId %}"
+          },
+          "Assign": {
+            "runTempoTask": "{% $states.result %}"
+          },
+          "End": true
+        }
+      }
+    }
+  }
+}

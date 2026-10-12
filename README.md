@@ -27,7 +27,7 @@ The artifacts in this repository can be deployed to to your Skedulo tenant by ru
     $ sked artifacts <artifact-type> upsert --filename <artifact-filename>
 ```
 
-Each artifact type is contained within a folder, for example `custom-fields` contains several example Custom Field artifacts. Some artifacts, such as `functions`, `mobile-extensions` and `web-extensions` are bundled. This means they contain an artifact file (e.g `hello-function.function.json`) and a folder containing the artifact itself. In order to deploy these, the artifact file must be passed to the CLI, not the folder.
+Each artifact type is contained within a folder, for example `custom-fields` contains several example Custom Field artifacts. Some artifacts, such as `functions`, `public-page` and `web-extension` are bundled. This means they contain an artifact file (e.g `hello-function.function.json`) and a folder containing the artifact itself. In order to deploy these, the artifact file must be passed to the CLI, not the folder.
 
 More information on working with artifacts can be found in the [Skedulo documentation.](https://docs.skedulo.com/developer-guides/cli/working-with-artifacts/)
 
@@ -35,17 +35,21 @@ More information on working with artifacts can be found in the [Skedulo document
 
 The following artifact types are currently available in this repository (with links to their respective documentation)
 
+* [Automations (automation)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/automation/), see also [Create Tempo tasks from automations](https://docs.skedulo.com/developer-guides/tempo/create-tasks-from-automations/)
+* [Config Variables (config-variable)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/config-variable/)
+* [Custom Agents (custom-agent)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/custom-agent/), see also [Custom agents](https://docs.skedulo.com/developer-guides/tempo/custom-agents/)
 * [Custom Fields (custom-field)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/custom-field/)
 * [Custom Objects (custom-object)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/custom-object/)
-* [Functions (functions)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/function/)
+* [Functions (function)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/function/)
 * [Horizon Pages (horizon-page)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/horizon-page/)
 * [Horizon Templates (horizon-template)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/horizon-template/)
-* [Mobile Extensions (mobile-extension)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/mobile-extension/)
 * [Public Page (public-page)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/public-page/)
 * [Triggered Actions (triggered-action)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/triggered-action/)
 * [Web Extensions (web-extension)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/web-extension/)
 * [Webhooks (webhook)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/webhook/)
-* [User Roles (user-role)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/user-role/)  
+* [User Roles (user-role)](https://docs.skedulo.com/developer-guides/cli/command-reference/artifacts/user-role/)
+
+Automations and Custom Agents are alpha artifacts available on the Skedulo Pulse Platform only. If a command for an artifact type is missing from your CLI, run `sked artifacts update-descriptors` to refresh the list of artifact types.
 
 As more artifacts become available, examples will be added to this repository
 

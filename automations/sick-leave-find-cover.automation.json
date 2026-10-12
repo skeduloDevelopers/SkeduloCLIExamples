@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "type": "Automation"
+  },
+  "name": "sick-leave-find-cover",
+  "description": "Raise a Tempo task when a resource records sick leave, then start Tempo on it so cover is proposed before a scheduler opens the inbox.",
+  "status": "active",
+  "trigger": {
+    "type": "recordModified",
+    "description": "A resource records sick leave",
+    "config": {
+      "objectType": "Availabilities",
+      "operations": [
+        "Insert"
+      ],
+      "filter": "current.IsAvailable == false AND current.Type == 'Sick'"
+    }
+  },
+  "workflow": {
+    "description": "Create a Tempo task with the leave and the resource attached, then run it.",
+    "definition": {
+      "StartAt": "CreateTempoTask",
+      "States": {
+        "CreateTempoTask": {
+          "Type": "Task",
+          "Resource": "action:create-tempo-task",
+          "Arguments": {
+            "title": "Sick leave recorded: find cover",
+            "description": "{% 'A resource has recorded sick leave from ' & $trigger.current.Start & ' to ' & $trigger.current.Finish & '. Find cover for their jobs in that window so customers keep their appointments, and let the people affected know.' %}",
+            "priority": "high",
+            "contextRecords": [
+              {
+                "objectType": "Availabilities",
+                "id": "{% $trigger.current.UID %}",
+                "relationship": "subject"
+              },
+              {
+                "objectType": "Resources",
+                "id": "{% $trigger.current.ResourceId %}",
+                "relationship": "actor"
+              }
+            ]
+          },
+          "Assign": {
+            "createTempoTask": "{% $states.result %}"
+          },
+          "Next": "RunTempoTask"
+        },
+        "RunTempoTask": {
+          "Type": "Task",
+          "Resource": "action:run-tempo-task",
+          "Arguments": {
+            "taskId": "{% $createTempoTask.result.data.taskId %}"
+          },
+          "Assign": {
+            "runTempoTask": "{% $states.result %}"
+          },
+          "End": true
+        }
+      }
+    }
+  }
+}

@@ -11,6 +11,11 @@ Each file holds a trigger and a workflow. The workflow is an Amazon States Langu
 | `sick-leave-find-cover.automation.json` | A sick-leave availability is inserted | Creates a high-priority Tempo task with the leave and the resource attached, then runs it so Tempo proposes cover. |
 | `customer-cancellation-refill.automation.json` | A job's status changes to Cancelled | Creates a Tempo task with the job attached, then runs it so Tempo offers the freed slot to pending work. |
 
+The sick-leave trigger mirrors the worked example in the Tempo developer guide. Check both filters against your tenant's data before relying on them:
+
+* If resources request leave for approval, a sick-leave availability can be inserted with `Status` set to `Pending`. Add `AND current.Status == 'Approved'` to the filter so a pending request does not raise a task, and trigger on the `Update` operation with `previous.Status != 'Approved'` for leave that is approved after it is inserted.
+* The cancellation filter matches the default `AbortReason` value `Cancelled by customer`. If your tenant has customised the job cancellation reasons, use your own value.
+
 Deploy with:
 
 ```

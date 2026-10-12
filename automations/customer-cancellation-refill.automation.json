@@ -7,13 +7,13 @@
   "status": "active",
   "trigger": {
     "type": "recordModified",
-    "description": "A job's status changes to Cancelled",
+    "description": "A job's status changes to Cancelled with a customer cancellation reason",
     "config": {
       "objectType": "Jobs",
       "operations": [
         "Update"
       ],
-      "filter": "current.JobStatus == 'Cancelled' AND previous.JobStatus != 'Cancelled'"
+      "filter": "current.JobStatus == 'Cancelled' AND previous.JobStatus != 'Cancelled' AND current.AbortReason == 'Cancelled by customer'"
     }
   },
   "workflow": {

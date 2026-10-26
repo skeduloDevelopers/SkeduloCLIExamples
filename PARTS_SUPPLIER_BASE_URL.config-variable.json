@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "type": "ConfigVariable"
+  },
+  "key": "PARTS_SUPPLIER_BASE_URL",
+  "type": "plain-text",
+  "description": "Example plain-text variable holding the base URL of a parts supplier API.",
+  "status": "active",
+  "value": "https://parts.example.com/api/v1"
+}

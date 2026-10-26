@@ -8,12 +8,11 @@ A custom agent is an agent profile: a stock persona (`template`) plus structured
 
 | File | What it shows |
 | --- | --- |
-| `dispatch-assistant.custom-agent.json` | The minimal profile: a scheduler persona with read, suggest, and allocate tools. |
+| `dispatch-assistant.custom-agent.json` | The minimal profile, on the `scheduler` template. |
+| `skedulo-api-assistant.custom-agent.json` | The `generalist` template, with the `skedulo_api` tool. |
 | `parts-availability.custom-agent.json` | The `external_api` tool with `allowedDomains` restricting the hosts the agent may call. |
 
-## Pairing a secret with a host
-
-An `allowedDomains` entry can list configuration variable keys the agent may send to that host as `{{secret:KEY}}`:
+An `allowedDomains` entry can also list configuration variable keys the agent may send to that host as `{{secret:KEY}}`:
 
 ```json
 "allowedDomains": [
@@ -24,14 +23,9 @@ An `allowedDomains` entry can list configuration variable keys the agent may sen
 ]
 ```
 
-`PARTS_SUPPLIER_API_KEY` is the `config-variables/PARTS_SUPPLIER_API_KEY.config-variable.json` artifact. When both are shipped in a package, configuration variables deploy before custom agents, so the secret exists by the time the agent is published. Deploy them in the same order when deploying by hand:
+Deploy the configuration variable before the agent. A host that carries a secret must also be on the platform-curated destination list, or publishing fails with `allowed_domain_not_curated`, so the committed example omits `secrets`.
 
-```
-sked artifacts config-variable upsert -f config-variables/PARTS_SUPPLIER_API_KEY.config-variable.json -a <alias>
-sked artifacts custom-agent upsert -f custom-agents/parts-availability.custom-agent.json -a <alias>
-```
-
-A host that carries a secret must also be on the platform-curated destination list, or publishing fails with `allowed_domain_not_curated`. The committed example omits `secrets` so that it deploys as-is; ask Skedulo to curate your supplier's host before adding them.
+For these agents in use, with prompts to try, see [Tempo Agent Examples](https://github.com/skeduloDevelopers/TempoAgentExamples).
 
 Documentation:
 

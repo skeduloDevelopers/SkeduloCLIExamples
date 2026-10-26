@@ -6,5 +6,5 @@
   "type": "plain-text",
   "status": "active",
   "value": "https://parts.example.com/api/v1",
-  "description": "Base URL of the parts supplier API called by the parts-availability custom agent."
+  "description": "Example plain-text variable holding the base URL of a parts supplier API."
 }

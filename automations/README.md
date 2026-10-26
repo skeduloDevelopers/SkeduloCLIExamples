@@ -6,15 +6,12 @@ If `sked artifacts automation` is missing from your CLI, run `sked artifacts upd
 
 Each file holds a trigger and a workflow. The workflow is an Amazon States Language state machine in which every `Task` state names an action as `action:<action-name>` and passes its arguments in `Arguments`, with JSONata expressions in `{% %}`. A step's output is available to later steps under a variable named after the step, for example `$createTempoTask.result.data.taskId`.
 
-| File | Trigger | What it does |
-| --- | --- | --- |
-| `sick-leave-find-cover.automation.json` | A sick-leave availability is inserted | Creates a high-priority Tempo task with the leave and the resource attached, then runs it so Tempo proposes cover. |
-| `customer-cancellation-refill.automation.json` | A job's status changes to Cancelled | Creates a Tempo task with the job attached, then runs it so Tempo offers the freed slot to pending work. |
+| File | What it shows |
+| --- | --- |
+| `sick-leave-find-cover.automation.json` | A `recordModified` trigger on `Insert`, and a second action that uses the first action's output. |
+| `customer-cancellation-refill.automation.json` | A `recordModified` trigger on `Update` whose filter compares `current.` and `previous.` values. |
 
-The sick-leave trigger mirrors the worked example in the Tempo developer guide. Check both filters against your tenant's data before relying on them:
-
-* If resources request leave for approval, a sick-leave availability can be inserted with `Status` set to `Pending`. Add `AND current.Status == 'Approved'` to the filter so a pending request does not raise a task, and trigger on the `Update` operation with `previous.Status != 'Approved'` for leave that is approved after it is inserted.
-* The cancellation filter matches the default `AbortReason` value `Cancelled by customer`. If your tenant has customised the job cancellation reasons, use your own value.
+For these automations in use, including how to adapt their filters to your tenant's data, see [Tempo Agent Examples](https://github.com/skeduloDevelopers/TempoAgentExamples).
 
 Deploy with:
 

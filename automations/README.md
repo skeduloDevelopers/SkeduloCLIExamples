@@ -9,7 +9,7 @@ Each file holds a trigger and a workflow. The workflow is an Amazon States Langu
 | File | What it shows |
 | --- | --- |
 | `sick-leave-find-cover.automation.json` | A `recordModified` trigger on `Insert`, and a second action that uses the first action's output. |
-| `customer-cancellation-refill.automation.json` | A `recordModified` trigger on `Update` whose filter compares `current.` and `previous.` values. |
+| `customer-cancellation-refill.automation.json` | A `recordModified` trigger on `Update` whose filter compares `current.` and `previous.` values, a `Choice` step on an action's output, and the `update-tempo-task` and `resolve-tempo-task` actions. |
 
 For these automations in use, including how to adapt their filters to your tenant's data, see [Tempo Agent Examples](https://github.com/skeduloDevelopers/TempoAgentExamples).
 

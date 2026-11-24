@@ -10,7 +10,7 @@ A custom agent is an agent profile: a stock persona (`template`) plus structured
 | --- | --- |
 | `dispatch-assistant.custom-agent.json` | The minimal profile, on the `scheduler` template. |
 | `skedulo-api-assistant.custom-agent.json` | The `generalist` template, with the `skedulo_api` tool. |
-| `parts-availability.custom-agent.json` | The `external_api` tool with `allowedDomains` restricting the hosts the agent may call. |
+| `weather-check.custom-agent.json` | The `external_api` tool with `allowedDomains` restricting the hosts the agent may call. |
 
 An `allowedDomains` entry can also list configuration variable keys the agent may send to that host as `{{secret:KEY}}`:
 
@@ -23,9 +23,9 @@ An `allowedDomains` entry can also list configuration variable keys the agent ma
 ]
 ```
 
-Deploy the configuration variable before the agent. A host that carries a secret must also be on the platform-curated destination list, or publishing fails with `allowed_domain_not_curated`, so the committed example omits `secrets`.
+Deploy the configuration variable before the agent. A host that carries a secret must first be approved by Skedulo, or publishing fails with `allowed_domain_not_curated`; contact your Skedulo Customer Success Manager with the host name. `weather-check` calls a weather API that needs no key, so it has no `secrets`.
 
-For these agents in use, with prompts to try, see [Tempo Agent Examples](https://github.com/skeduloDevelopers/TempoAgentExamples).
+For these agents in use, with prompts to try, see [Tempo Agent Examples](https://github.com/skeduloDevelopers/TempoAgentExamples). It also has an agent that calls a function.
 
 Documentation:
 

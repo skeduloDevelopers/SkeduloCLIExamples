@@ -3,7 +3,7 @@
     "type": "Automation"
   },
   "name": "customer-cancellation-refill",
-  "description": "Raise a Tempo task when a customer cancels a job, then start Tempo on it so the freed slot is offered to pending work.",
+  "description": "Raise a Tempo task when a customer cancels a job, run Tempo on it, then flag the task for approval when Tempo has a plan or resolve it when there is nothing to move.",
   "status": "active",
   "trigger": {
     "type": "recordModified",
@@ -17,7 +17,7 @@
     }
   },
   "workflow": {
-    "description": "Create a Tempo task with the cancelled job attached, then run it.",
+    "description": "Create a Tempo task with the cancelled job attached, run it, then resolve the task when Tempo found nothing to move or retitle it and raise its priority for approval.",
     "definition": {
       "StartAt": "CreateTempoTask",
       "States": {
@@ -49,6 +49,41 @@
           },
           "Assign": {
             "runTempoTask": "{% $states.result %}"
+          },
+          "Next": "DidTempoFinishWithoutAPlan"
+        },
+        "DidTempoFinishWithoutAPlan": {
+          "Type": "Choice",
+          "Choices": [
+            {
+              "Condition": "{% $runTempoTask.result.data.status = 'completed' %}",
+              "Next": "ResolveTempoTask"
+            }
+          ],
+          "Default": "FlagForApproval"
+        },
+        "ResolveTempoTask": {
+          "Type": "Task",
+          "Resource": "action:resolve-tempo-task",
+          "Arguments": {
+            "taskId": "{% $createTempoTask.result.data.taskId %}",
+            "resolutionNote": "{% $substring('Tempo found nothing to move into the freed slot. ' & $runTempoTask.result.data.summary, 0, 2000) %}"
+          },
+          "Assign": {
+            "resolveTempoTask": "{% $states.result %}"
+          },
+          "End": true
+        },
+        "FlagForApproval": {
+          "Type": "Task",
+          "Resource": "action:update-tempo-task",
+          "Arguments": {
+            "taskId": "{% $createTempoTask.result.data.taskId %}",
+            "title": "{% 'Approve the refill plan for ' & $trigger.current.Name %}",
+            "priority": "high"
+          },
+          "Assign": {
+            "flagForApproval": "{% $states.result %}"
           },
           "End": true
         }

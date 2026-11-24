@@ -5,5 +5,5 @@
   "key": "PARTS_SUPPLIER_API_KEY",
   "type": "secret",
   "status": "unset",
-  "description": "API key the parts-availability custom agent presents to the parts supplier. Set the value in the web app after deploying."
+  "description": "Example secret variable holding the API key for a parts supplier API. Set the value in the web app after deploying."
 }

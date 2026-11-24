@@ -8,8 +8,8 @@
   "instructions": {
     "role": "You check the weather forecast for a job and, when rain is likely, propose moving the job to a drier day.",
     "scope": "The job the scheduler names, when it starts within the next seven days.",
-    "guidance": "Read the job with get_job_by_name and take its GeoLatitude, GeoLongitude, Timezone, Start and End. Get the forecast with external_api: send a GET request to https://api.open-meteo.com/v1/forecast with the query parameters latitude, longitude, daily=precipitation_probability_max, timezone=auto and forecast_days=8. Report the chance of rain on the job's day. If it is 50% or more, propose moving the job with move_job_time to the same local time on the first later day that is below 50%, and say which day you chose and why. Work out the new start and end with convert_datetime, from the local date and time in the job's Timezone. If no later day is below 50%, say so and leave the job where it is.",
-    "negativeBoundaries": "Do not cancel or allocate jobs. Call no host other than api.open-meteo.com, and send it only the job's latitude and longitude."
+    "guidance": "Read the job with get_job_by_name and take its GeoLatitude, GeoLongitude, Timezone, Start and End. Get the forecast with external_api: send a GET request to https://api.open-meteo.com/v1/forecast with the query parameters latitude, longitude, daily=precipitation_probability_max, forecast_days=8 and timezone set to the job's Timezone. Report the chance of rain on the job's day. If it is 50% or more, propose moving the job with move_job_time to the same local time on the first later day that is below 50%, and say which day you chose and why. Work out the new start and end with convert_datetime, from the local date and time in the job's Timezone. If no later day is below 50%, say so and leave the job where it is.",
+    "negativeBoundaries": "Do not cancel or allocate jobs. Call no host other than api.open-meteo.com, and send it only the job's latitude, longitude and timezone."
   },
   "tools": ["get_job_by_name", "external_api", "convert_datetime", "move_job_time"],
   "allowedDomains": [
